@@ -1,0 +1,47 @@
+#navbar{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: #CDFAFB;
+}
+.navbar .navbar-brand{
+  font-size: 25px;
+  font-weight: 800;
+  color: black !important;
+}
+section{
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+
+}
+#fetchAll{
+  background-image: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.7)),url("C:/Angular/customer-management/src/assets/image1.jpg") ;
+  background-size: cover;
+  background-position: center;
+}
+
+#fetchAll h1{
+    font-size: 50px;
+    color: white;
+    letter-spacing: 3px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-shadow:  0px 1px 0px #ccc,
+                  0px 2px 0px #ccc,
+                  0px 3px 0px #ccc,
+                  0px 4px 0px #ccc,
+                  0px 5px 0px #ccc;
+}
+#fetchAll th{
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.form-control.ng-touched.ng-invalid {
+  border: 1px solid red;
+}
+.form-control.ng-touched.ng-valid {
+  border: 1px solid green;
+}

@@ -1,0 +1,330 @@
+<div class="containe-fluid">
+  <nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Suku Garage</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-expanded="false"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto">
+          <button
+            class="btn btn-outline-success me-2"
+            type="submit"
+            data-bs-toggle="modal"
+            data-bs-target="#addCustomer"
+          >
+            Add Customer
+          </button>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!---Table fetch all--->
+  <section id="fetchAll">
+    <h1>All Customer Detail</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Customer ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Email ID</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of custList">
+          <th>{{ customer.customerId }}</th>
+          <th>{{ customer.customerName }}</th>
+          <th>{{ customer.dateOfBirth }}</th>
+          <th>{{ customer.mobileNo }}</th>
+          <th>{{ customer.emailId }}</th>
+          <td>
+            <button
+              type="button"
+              class="btn btn-outline-primary me-2"
+              data-bs-toggle="modal"
+              data-bs-target="#editCustomer"
+              (click)="editCustomer(customer)"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              (click)="deleteCustomer(customer)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <!-- fetch by id modal -->
+
+  <form (ngSubmit)="onSubmit()" #customerForm="ngForm">
+    <div class="form-group" id="fetchById">
+      <label for="customerId">Customer ID</label>
+      <input
+        type="text"
+        [(ngModel)]="custObj.customerId"
+        class="form-control"
+        id="customerId"
+        name="customerId"
+        placeholder="Enter the Customer Id"
+        required
+        #customerId="ngModel"
+      />
+      <div [hidden]="!customerId.pristine" class="alert alert-danger">
+        Id is required
+      </div>
+    </div>
+    <button
+      type="submit"
+      [disabled]="!customerForm.form.valid"
+      class="btn btn-info"
+    >
+      Submit
+    </button>
+  </form>
+  <div class="card bg-light my-5">
+    <div class="card-body">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Email ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="custObj">
+            <td>{{ custObj.customerId }}</td>
+            <td>{{ custObj.customerName }}</td>
+            <td>{{ custObj.dateOfBirth }}</td>
+            <td>{{ custObj.mobileNo }}</td>
+            <td>{{ custObj.emailId }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Customer modal -->
+  <section id="addCust">
+    <div
+      class="modal fade"
+      id="addCustomer"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Customer</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="custDetail">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input
+                  type="text"
+                  formControlName="customerName"
+                  class="form-control"
+                  id="customerName"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >Date of Birth</label
+                >
+                <input
+                  type="date"
+                  formControlName="dateOfBirth"
+                  class="form-control"
+                  id="dateOfBirth"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >Mobile No*</label
+                >
+                <input
+                  type="number"
+                  formControlName="mobileNo"
+                  class="form-control"
+                  id="mobileNo"
+                  #mobileNo=""
+                  aria-describedby="emailHelp"
+                  required
+                />
+                <small
+                  *ngIf="
+                    custDetail.get('mobileNo')?.invalid &&
+                    custDetail.get('mobileNo')?.touched
+                  "
+                  class="text-danger"
+                  >Mobile No Required</small
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input
+                  type="text"
+                  formControlName="emailId"
+                  class="form-control"
+                  id="emailId"
+                  aria-describedby="emailHelp"
+                />
+                <small
+                  *ngIf="
+                    custDetail.get('emailId')?.invalid &&
+                    custDetail.get('emailId')?.touched
+                  "
+                  class="text-danger"
+                  >Email is Required</small
+                >
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  [disabled]="custDetail.invalid"
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="addCustomer()"
+                  data-bs-dismiss="modal"
+                >
+                  Add Customer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Edit customer detail modal -->
+  <div
+    class="modal fade"
+    id="editCustomer"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Edit Customer Details
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="custDetail">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Name</label>
+              <input
+                type="text"
+                formControlName="customerName"
+                class="form-control"
+                id="customerName"
+                aria-describedby="emailHelp"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >Date of Birth</label
+              >
+              <input
+                type="date"
+                formControlName="dateOfBirth"
+                class="form-control"
+                id="dateOfBirth"
+                aria-describedby="emailHelp"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >Mobile No</label
+              >
+              <input
+                type="text"
+                formControlName="mobileNo"
+                class="form-control"
+                id="mobileNo"
+                aria-describedby="emailHelp"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input
+                type="email"
+                formControlName="emailId"
+                class="form-control"
+                id="emailId"
+                aria-describedby="emailHelp"
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="updateCustomer()"
+                data-bs-dismiss="modal"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
